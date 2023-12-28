@@ -42,7 +42,6 @@ def create_spreadsheet(service):
             "title": "Бюджет путешествий",
             "locale": "ru_RU",
         },
-        # Свойства листов документа
         "sheets": [
             {
                 "properties": {
@@ -66,12 +65,10 @@ def set_user_permissions(spreadsheet_id, credentials):
         "type": "user",  # Тип учетных данных.
         "role": "writer",  # Права доступа для учётной записи.
         "emailAddress": EMAIL_USER,
-    }  # Ваш личный гугл-аккаунт.
+    }
 
-    # Создаётся экземпляр класса Resource для Google Drive API.
     drive_service = discovery.build("drive", "v3", credentials=credentials)
 
-    # Формируется и сразу выполняется запрос на выдачу прав вашему аккаунту.
     drive_service.permissions().create(
         fileId=spreadsheet_id, body=permissions_body, fields="id"
     ).execute()
@@ -88,9 +85,7 @@ def spreadsheet_update_values(service, spreadsheetId):
         ["Перелет", "Транспорт", "2", "400", "=C7*D7"],
     ]
 
-    # Тело запроса.
     request_body = {"majorDimension": "ROWS", "values": table_values}
-    # Формирование запроса к Google Sheets API.
     request = (
         service.spreadsheets()
         .values()
@@ -101,11 +96,9 @@ def spreadsheet_update_values(service, spreadsheetId):
             body=request_body,
         )
     )
-    # Выполнение запроса.
     request.execute()
 
 
-# Напишите функцию, которая получит данные из диапазона Лист1!A1:I10
 def read_values(service, spreadsheet_id):
     result = (
         service.spreadsheets()
@@ -116,7 +109,6 @@ def read_values(service, spreadsheet_id):
     return result["values"]
 
 
-# Вызов функций
 service, credentials = auth()
 spreadsheetId = create_spreadsheet(service)
 set_user_permissions(spreadsheetId, credentials)
