@@ -50,4 +50,4 @@ def clear_disk(service, spreadsheets):
 service = auth()
 spreadsheets = get_list_obj(service)["files"]
 pprint(get_list_obj(service))
-# clear_disk(service, spreadsheets)
+
